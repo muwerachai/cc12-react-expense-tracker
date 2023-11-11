@@ -27,6 +27,7 @@ function CreateTransactionForm(props) {
       return setError(transactionError);
     }
 
+    props.createTransaction({ payee, amount, date, category, type });
     props.onCloseForm();
     setError({});
     setPayee("");

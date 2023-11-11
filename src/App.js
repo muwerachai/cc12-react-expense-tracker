@@ -5,6 +5,7 @@ import { validateTransaction } from "./services/validator";
 import TransactionItem from "./components/TransactionItem";
 import { createClasses } from "./services/classService";
 import CreateTransaction from "./components/CreateTransaction";
+import EditTransactionForm from "./components/EditTransactionForm";
 
 const initialTransactions = [
   {
@@ -35,6 +36,7 @@ const initialTransactions = [
 
 function App() {
   const [transactions, setTransactions] = useState(initialTransactions);
+  const [editingTransaction, setEditingTransaction] = useState(null);
 
   const createTransaction = ({ payee, amount, date, type, category }) => {
     const newTransaction = {
@@ -51,13 +53,23 @@ function App() {
   };
   return (
     <div className="container" style={{ maxWidth: 768 }}>
-      <CreateTransaction createTransaction={createTransaction} />
+      {editingTransaction ? (
+        <EditTransactionForm />
+      ) : (
+        <CreateTransaction createTransaction={createTransaction} />
+      )}
       {/* ********** End Create Form ********** */}
 
       {/* ********** Begin Transaction List ********** */}
       <ul className="list-group my-3">
         {transactions.map((item) => (
-          <TransactionItem key={item.id} transaction={item} />
+          <TransactionItem
+            key={item.id}
+            transaction={item}
+            openEditForm={(editTransaction) => {
+              setEditingTransaction(editTransaction);
+            }}
+          />
         ))}
       </ul>
       {/* ********** End Transaction List ********** */}
