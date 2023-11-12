@@ -51,10 +51,30 @@ function App() {
     newTransactions.sort((a, b) => (b.date > a.date ? 1 : -1));
     setTransactions(newTransactions);
   };
+
+  const deleteTransaction = (transactionId) => {
+    const newTransactions = transactions.filter(
+      (item) => item.id !== transactionId
+    );
+    setTransactions(newTransactions);
+  };
+
+  const updateTransaction = (transactionId, input) => {
+    const newTransactions = transactions.map((item) =>
+      item.id === transactionId ? { ...item, ...input } : item
+    );
+    setTransactions(newTransactions);
+  };
+
   return (
     <div className="container" style={{ maxWidth: 768 }}>
       {editingTransaction ? (
-        <EditTransactionForm />
+        <EditTransactionForm
+          transaction={editingTransaction}
+          closeEditForm={() => setEditingTransaction(null)}
+          deleteTransaction={deleteTransaction}
+          updateTransaction={updateTransaction}
+        />
       ) : (
         <CreateTransaction createTransaction={createTransaction} />
       )}
